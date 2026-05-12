@@ -17,10 +17,7 @@ class ImovelListarController(ImovelListarControllerInterface):
         return imoveis
 
     def __format_response(self, imoveis: List[Imovel]) -> Dict:
-        formatted_imoveis = []
-        for imovel in imoveis:
-            formatted_imoveis.append({ "descricao": imovel.descricao, "valor": imovel.valor, "id": imovel.id })
-
+        formatted_imoveis = [{ "descricao": imovel.descricao, "valor": imovel.valor, "id": imovel.id } for imovel in imoveis]
         return {
             "data": {
                 "type": "Imoveis",

@@ -1,9 +1,8 @@
 from typing import List
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import Session
 from src.models.interfaces.imovel_repository import ImovelRepositoryInterface
 from src.models.entities.imovel import Imovel
-from src.errors.types.http_bad_request_error import HttpBadRequestError
+from src.errors.types.http_not_found_error import HttpNotFoundError
 
 class ImovelRepository(ImovelRepositoryInterface):
     def __init__(self, db: Session) -> None:
@@ -15,11 +14,12 @@ class ImovelRepository(ImovelRepositoryInterface):
         return imoveis
 
 
-    async def inserir_imovel(self, imovel_info: dict) -> None:
+    async def inserir_imovel(self, imovel_info: dict) -> Imovel:
         try:
             imovel = Imovel(**imovel_info)
             self.__db_session.add(imovel)
             self.__db_session.commit()
+            return imovel
         except Exception as exception:
             self.__db_session.rollback()
             raise exception
@@ -28,7 +28,7 @@ class ImovelRepository(ImovelRepositoryInterface):
     async def visualizar_imoveis(self, imovel_id: int) -> Imovel:
         imovel = self.__db_session.query(Imovel).filter(Imovel.id == imovel_id).first()
         if not imovel:
-            raise HttpBadRequestError("Imóvel não encontrado.")
+            raise HttpNotFoundError("Imóvel não encontrado.")
         return imovel
 
 
@@ -36,7 +36,7 @@ class ImovelRepository(ImovelRepositoryInterface):
         try:
             imovel = self.__db_session.query(Imovel).filter(Imovel.id == imovel_info.get("id")).first()
             if not imovel:
-                raise HttpBadRequestError("Imóvel não encontrado.")
+                raise HttpNotFoundError("Imóvel não encontrado.")
             
             imovel.descricao = imovel_info.get("descricao")
             imovel.valor = imovel_info.get("valor")
@@ -51,7 +51,7 @@ class ImovelRepository(ImovelRepositoryInterface):
         try:
             imovel = self.__db_session.query(Imovel).filter(Imovel.id == imovel_id).first()
             if not imovel:
-                raise HttpBadRequestError("Imóvel não encontrado.")
+                raise HttpNotFoundError("Imóvel não encontrado.")
             
             self.__db_session.delete(imovel)
             self.__db_session.commit()

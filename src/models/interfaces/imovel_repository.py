@@ -8,7 +8,7 @@ class ImovelRepositoryInterface(ABC):
     async def listar_imoveis(self) -> List[Imovel]: pass
 
     @abstractmethod
-    async def inserir_imovel(self, imovel_info: dict) -> None: pass
+    async def inserir_imovel(self, imovel_info: dict) -> Imovel: pass
 
     @abstractmethod
     async def visualizar_imoveis(self, imovel_id: int) -> Imovel: pass

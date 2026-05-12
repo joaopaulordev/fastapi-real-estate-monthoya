@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from src.main.routes.schemas import ImovelSchema
