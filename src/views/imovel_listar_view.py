@@ -9,7 +9,10 @@ class ImovelListarView:
 
     async def handle_listar_imoveis(self, http_request: HttpRequest) -> HttpResponse:
         try:
-            body_response = await self.__controller.listar()
+            valor_inicial = http_request.body.get("valor_inicial")
+            valor_final = http_request.body.get("valor_final")
+
+            body_response = await self.__controller.listar(valor_inicial, valor_final)
             return HttpResponse(status_code=200, body=body_response)
         except Exception as exception:
             error_handler(exception)

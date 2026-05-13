@@ -3,14 +3,30 @@ from sqlalchemy.orm import Session
 from src.models.interfaces.imovel_repository import ImovelRepositoryInterface
 from src.models.entities.imovel import Imovel
 from src.errors.types.http_not_found_error import HttpNotFoundError
+from src.errors.types.http_bad_request_error import HttpBadRequestError
+
 
 class ImovelRepository(ImovelRepositoryInterface):
     def __init__(self, db: Session) -> None:
         self.__db_session = db
 
 
-    async def listar_imoveis(self) -> List[Imovel]:
-        imoveis = self.__db_session.query(Imovel).all()
+    async def listar_imoveis(self, valor_inicial: float, valor_final: float) -> List[Imovel]:
+        if valor_final < valor_inicial:
+            raise HttpBadRequestError("Valor final deve ser maior que o valor inicial.")
+        
+        if valor_inicial < 0 or valor_final < 0:
+            raise HttpBadRequestError("Valores devem ser positivos.")
+        
+        if valor_inicial == 0 and valor_final == 0:
+             imoveis = self.__db_session.query(Imovel).all()
+             return imoveis
+        
+        if valor_inicial == 0:
+             imoveis = self.__db_session.query(Imovel).filter(Imovel.valor <= valor_final).all()
+             return imoveis
+        
+        imoveis = self.__db_session.query(Imovel).filter(Imovel.valor >= valor_inicial, Imovel.valor <= valor_final).all()
         return imoveis
 
 

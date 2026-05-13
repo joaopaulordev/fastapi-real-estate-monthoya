@@ -5,7 +5,7 @@ from src.models.entities.imovel import Imovel
 class ImovelRepositoryInterface(ABC):
 
     @abstractmethod
-    async def listar_imoveis(self) -> List[Imovel]: pass
+    async def listar_imoveis(self, valor_inicial: float, valor_final: float) -> List[Imovel]: pass
 
     @abstractmethod
     async def inserir_imovel(self, imovel_info: dict) -> Imovel: pass

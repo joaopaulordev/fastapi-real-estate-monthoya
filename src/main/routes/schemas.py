@@ -8,3 +8,10 @@ class ImovelSchema(BaseModel):
     class Config:
         from_attributes = True
 
+
+class BuscaImovelSchema(BaseModel):
+    valor_inicial: float
+    valor_final: float
+
+    class Config:
+        from_attributes = True
