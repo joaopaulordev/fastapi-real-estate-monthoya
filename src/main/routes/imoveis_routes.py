@@ -25,7 +25,7 @@ async def criar_imovel(body: ImovelSchema, db: Session = Depends(get_session_db)
     )
 
 
-@imoveis_routes.post("/imoveis/buscar")
+@imoveis_routes.post("/imoveis/listar")
 async def listar_imoveis(body: BuscaImovelSchema, db: Session = Depends(get_session_db)):    
     http_request = HttpRequest(body=dict(body))
     view = imovel_listar_composer(db)

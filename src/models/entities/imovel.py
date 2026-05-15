@@ -105,6 +105,7 @@ class Imovel(Base):
     vagas_garagem = Column("vagas_garagem", Integer, nullable=True)
     vagas_garagem_cobertas = Column("vagas_garagem_cobertas", Integer, nullable=True)
     vagas_garagem_descobertas = Column("vagas_garagem_descobertas", Integer, nullable=True)
+
     
     def __init__(self, descricao, ativo, lancamento, destaque, valor, visualizacoes, finalidade, tipo_imovel, pretensao, estado, cidade, endereco, complemento, sobre_imovel, area_total, area_construida, dormitorios, banheiros, suites, vagas_garagem, vagas_garagem_cobertas, vagas_garagem_descobertas):
         self.descricao = descricao

@@ -11,7 +11,8 @@ class ImovelRepository(ImovelRepositoryInterface):
         self.__db_session = db
 
 
-    async def listar_imoveis(self, valor_inicial: float, valor_final: float) -> List[Imovel]:
+    async def listar_imoveis(self, valor_inicial: float, valor_final: float, pretensao: int, finalidade: int, tipo_imovel: int, lancamento: bool, destaque: bool, ativo: bool) -> List[Imovel]:
+        imoveis = None
         if valor_final < valor_inicial:
             raise HttpBadRequestError("Valor final deve ser maior que o valor inicial.")
         
@@ -19,14 +20,27 @@ class ImovelRepository(ImovelRepositoryInterface):
             raise HttpBadRequestError("Valores devem ser positivos.")
         
         if valor_inicial == 0 and valor_final == 0:
-             imoveis = self.__db_session.query(Imovel).all()
-             return imoveis
-        
-        if valor_inicial == 0:
+             imoveis = self.__db_session.query(Imovel).all()             
+        elif valor_inicial == 0:
              imoveis = self.__db_session.query(Imovel).filter(Imovel.valor <= valor_final).all()
-             return imoveis
+        else:
+            imoveis = self.__db_session.query(Imovel).filter(Imovel.valor >= valor_inicial, Imovel.valor <= valor_final).all()
+
+        if pretensao:
+            imoveis = [imovel for imovel in imoveis if imovel.pretensao == pretensao]
         
-        imoveis = self.__db_session.query(Imovel).filter(Imovel.valor >= valor_inicial, Imovel.valor <= valor_final).all()
+        if finalidade:
+            imoveis = [imovel for imovel in imoveis if imovel.finalidade == finalidade]
+
+        if tipo_imovel:
+            imoveis = [imovel for imovel in imoveis if imovel.tipo_imovel == tipo_imovel]
+        
+        imoveis = [imovel for imovel in imoveis if imovel.lancamento == lancamento]
+
+        imoveis = [imovel for imovel in imoveis if imovel.destaque == destaque]
+
+        imoveis = [imovel for imovel in imoveis if imovel.ativo == ativo]
+
         return imoveis
 
 

@@ -30,6 +30,12 @@ class ImovelSchema(BaseModel):
 
 
 class BuscaImovelSchema(BaseModel):
+    ativo: Optional[bool] = True
+    pretensao: int
+    finalidade: int
+    tipo_imovel: int    
+    lancamento: Optional[bool] = False
+    destaque: Optional[bool] = False
     valor_inicial: float
     valor_final: float
 
