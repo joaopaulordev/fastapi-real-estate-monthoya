@@ -17,7 +17,7 @@ class FotoListarController(FotoListarControllerInterface):
         return fotos
 
     def __format_response(self, fotos: List[Foto]) -> dict:
-        formatted_fotos = [{ "id": foto.id, "caminho": foto.caminho, "imovel_id": foto.imovel } for foto in fotos]
+        formatted_fotos = [{ "id": foto.id, "caminho": foto.caminho, "imovel_id": foto.imovel_id } for foto in fotos]
         return {
             "data": {
                 "type": "Fotos",

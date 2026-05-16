@@ -14,7 +14,7 @@ class FotoRepository(FotoRepositoryInterface):
         if not imovel:
             raise HttpNotFoundError("Imóvel não encontrado.")
         
-        fotos = self.__db_session.query(Foto).filter(Foto.imovel == imovel.id).all()
+        fotos = self.__db_session.query(Foto).filter(Foto.imovel == imovel).all()        
         return fotos
 
 
@@ -26,7 +26,7 @@ class FotoRepository(FotoRepositoryInterface):
             
             foto = self.__db_session.query(Foto).filter(Foto.caminho == foto_info["caminho"]).first()
             if not foto:
-                foto = Foto(imovel=imovel.id, caminho=foto_info["caminho"])
+                foto = Foto(imovel=imovel, caminho=foto_info["caminho"])
                 self.__db_session.add(foto)
                 self.__db_session.commit()                        
         except Exception as exception:

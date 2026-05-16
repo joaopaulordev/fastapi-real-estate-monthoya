@@ -1,5 +1,6 @@
+from typing import List
 from sqlalchemy import Column, String, Integer, Float, Boolean, ForeignKey, Table
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base, relationship, mapped_column, Mapped
 
 Base = declarative_base()
 
@@ -80,8 +81,8 @@ class Caracteristica(Base):
 
 class Imovel(Base):
     __tablename__ = "imoveis"
-
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
     descricao = Column("descricao", String, nullable=False)
     ativo = Column("ativo", Boolean, nullable=True, default=True)
     lancamento = Column("lancamento", Boolean, nullable=True, default=False)
@@ -105,6 +106,9 @@ class Imovel(Base):
     vagas_garagem = Column("vagas_garagem", Integer, nullable=True)
     vagas_garagem_cobertas = Column("vagas_garagem_cobertas", Integer, nullable=True)
     vagas_garagem_descobertas = Column("vagas_garagem_descobertas", Integer, nullable=True)
+    fotos: Mapped[List["Foto"]] = relationship(back_populates="imovel")
+    comentarios: Mapped[List["Comentario"]] = relationship(back_populates="imovel")
+    interessados: Mapped[List["Interessado"]] = relationship(back_populates="imovel")
 
     
     def __init__(self, descricao, ativo, lancamento, destaque, valor, visualizacoes, finalidade, tipo_imovel, pretensao, estado, cidade, endereco, complemento, sobre_imovel, area_total, area_construida, dormitorios, banheiros, suites, vagas_garagem, vagas_garagem_cobertas, vagas_garagem_descobertas):
@@ -138,9 +142,10 @@ class Imovel(Base):
 class Foto(Base):
     __tablename__ = "fotos"
 
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
-    caminho = Column("caminho", String, nullable=False)
-    imovel = Column("imovel", ForeignKey("imoveis.id"))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    caminho = Column("caminho", String, nullable=False)    
+    imovel_id: Mapped[int] = mapped_column(ForeignKey("imoveis.id"))
+    imovel: Mapped["Imovel"] = relationship(back_populates="fotos")
     
     def __init__(self, caminho, imovel):
         self.caminho = caminho
@@ -153,10 +158,11 @@ class Foto(Base):
 class Comentario(Base):
     __tablename__ = "comentarios"
 
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     texto = Column("texto", String, nullable=False)
     aprovado = Column("aprovado", Boolean, nullable=False, default=False)
-    imovel = Column("imovel", ForeignKey("imoveis.id"))
+    imovel_id: Mapped[int] = mapped_column(ForeignKey("imoveis.id"))
+    imovel: Mapped["Imovel"] = relationship(back_populates="comentarios")
     
     def __init__(self, texto, imovel):
         self.texto = texto
@@ -169,13 +175,14 @@ class Comentario(Base):
 class Interessado(Base):
     __tablename__ = "interessados"
 
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     nome = Column("nome", String, nullable=False)
     email = Column("email", String, nullable=False)
     telefone = Column("telefone", String, nullable=False)
     estado = Column("estado", Integer, ForeignKey("estados.id"))    
     cidade = Column("cidade", String, nullable=False)
-    imovel = Column("imovel", ForeignKey("imoveis.id"))
+    imovel_id: Mapped[int] = mapped_column(ForeignKey("imoveis.id"))
+    imovel: Mapped["Imovel"] = relationship(back_populates="interessados")
     
     def __init__(self, nome, email, telefone, estado, cidade, imovel):
         self.nome = nome
