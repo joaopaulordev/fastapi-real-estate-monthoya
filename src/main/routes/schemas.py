@@ -1,6 +1,14 @@
 from pydantic import BaseModel
 from typing import Optional, List
 
+
+class FinalidadeSchema(BaseModel):
+    descricao: str
+    
+    class Config:
+        from_attributes = True
+        
+
 class ImovelSchema(BaseModel):
     descricao: str
     ativo: Optional[bool] = True
