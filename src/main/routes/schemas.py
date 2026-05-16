@@ -41,3 +41,11 @@ class BuscaImovelSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ComentarioSchema(BaseModel):
+    texto: str
+    aprovado: Optional[bool] = False
+
+    class Config:
+        from_attributes = True
