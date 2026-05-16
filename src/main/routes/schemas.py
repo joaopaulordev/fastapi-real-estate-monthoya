@@ -49,3 +49,14 @@ class ComentarioSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class InteressadoSchema(BaseModel):
+    nome: str
+    email: str
+    telefone: str
+    estado: int
+    cidade: str
+
+    class Config:
+        from_attributes = True
