@@ -2,7 +2,7 @@ from typing import List
 from sqlalchemy.orm import Session
 from src.errors.types.http_not_found_error import HttpNotFoundError
 from src.models.interfaces.finalidade_repository import FinalidadeRepositoryInterface
-from src.models.entities.imovel import Finalidade, Imovel
+from src.models.entities.imovel import Finalidade
 
 class FinalidadeRepository(FinalidadeRepositoryInterface):
     def __init__(self, db: Session) -> None:
@@ -37,10 +37,10 @@ class FinalidadeRepository(FinalidadeRepositoryInterface):
             if not finalidade:
                 raise HttpNotFoundError("Finalidade não encontrada.")
 
-            finalidade.descricao = finalidade_info.get("descricao")
-            
+            finalidade.descricao = finalidade_info.get("descricao")            
             self.__db_session.commit()
-            return await self.visualizar_finalidade(finalidade.id)
+            
+            return finalidade
         except Exception as exception:
             self.__db_session.rollback()
             raise exception

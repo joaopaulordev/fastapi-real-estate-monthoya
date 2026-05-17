@@ -1,4 +1,3 @@
-from src.errors.types.http_not_found_error import HttpNotFoundError
 from src.models.interfaces.finalidade_repository import FinalidadeRepositoryInterface
 from .interfaces.finalidade_deletar_controller import FinalidadeDeletarControllerInterface
 

@@ -7,7 +7,14 @@ class FinalidadeSchema(BaseModel):
     
     class Config:
         from_attributes = True
-        
+
+
+class TipoImovelSchema(BaseModel):
+    descricao: str
+    
+    class Config:
+        from_attributes = True
+
 
 class ImovelSchema(BaseModel):
     descricao: str

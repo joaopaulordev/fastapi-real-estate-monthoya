@@ -1,4 +1,3 @@
-from typing import Dict
 from src.models.interfaces.finalidade_repository import FinalidadeRepositoryInterface
 from src.models.entities.imovel import Finalidade
 from .interfaces.finalidade_visualizar_controller import FinalidadeVisualizarControllerInterface
