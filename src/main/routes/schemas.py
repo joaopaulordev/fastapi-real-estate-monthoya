@@ -16,6 +16,13 @@ class TipoImovelSchema(BaseModel):
         from_attributes = True
 
 
+class PretensaoSchema(BaseModel):
+    descricao: str
+    
+    class Config:
+        from_attributes = True
+
+
 class ImovelSchema(BaseModel):
     descricao: str
     ativo: Optional[bool] = True

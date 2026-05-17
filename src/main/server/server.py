@@ -5,11 +5,13 @@ from src.main.routes.comentarios_routes import comentario_routes
 from src.main.routes.interessados_routes import interessado_routes
 from src.main.routes.finalidades_routes import finalidade_routes
 from src.main.routes.tipo_imoveis_routes import tipo_imovel_routes
+from src.main.routes.pretensoes_routes import pretensao_routes
 
 app = FastAPI()
 
 app.include_router(finalidade_routes)
 app.include_router(tipo_imovel_routes)
+app.include_router(pretensao_routes)
 app.include_router(imoveis_routes)
 app.include_router(fotos_routes)
 app.include_router(comentario_routes)
