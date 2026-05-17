@@ -24,18 +24,18 @@ class PretensaoSchema(BaseModel):
 
 
 class ImovelSchema(BaseModel):
-    descricao: str
-    ativo: Optional[bool] = True
-    lancamento: Optional[bool] = False
-    destaque: Optional[bool] = False
-    valor: float
+    descricao: Optional[str] = None
+    ativo: Optional[bool] = None
+    lancamento: Optional[bool] = None
+    destaque: Optional[bool] = None
+    valor: Optional[float] = None
     visualizacoes: Optional[int] = 0
-    finalidade: int
-    tipo_imovel: int
-    pretensao: int
-    estado: int 
-    cidade: str
-    endereco: str
+    finalidade: Optional[int] = None
+    tipo_imovel: Optional[int] = None
+    pretensao: Optional[int] = None
+    estado: Optional[int] = None 
+    cidade: Optional[str] = None
+    endereco: Optional[str] = None
     complemento: Optional[str] = None
     sobre_imovel: Optional[str] = None
     area_total: Optional[float] = None

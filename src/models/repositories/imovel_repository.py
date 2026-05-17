@@ -113,6 +113,10 @@ class ImovelRepository(ImovelRepositoryInterface):
         imovel = self.__db_session.query(Imovel).filter(Imovel.id == imovel_id).first()
         if not imovel:
             raise HttpNotFoundError("Imóvel não encontrado.")
+        
+        imovel.visualizacoes += 1
+        self.__db_session.commit()
+
         return imovel
 
 
@@ -122,31 +126,30 @@ class ImovelRepository(ImovelRepositoryInterface):
             if not imovel:
                 raise HttpNotFoundError("Imóvel não encontrado.")
 
-            imovel.descricao = imovel_info.get("descricao")
-            imovel.ativo = imovel_info.get("ativo")
-            imovel.lancamento = imovel_info.get("lancamento")
-            imovel.destaque = imovel_info.get("destaque")
-            imovel.valor = imovel_info.get("valor")
-            imovel.visualizacoes = imovel_info.get("visualizacoes")
-            imovel.finalidade = imovel_info.get("finalidade")
-            imovel.tipo_imovel = imovel_info.get("tipo_imovel")
-            imovel.pretensao = imovel_info.get("pretensao")
-            imovel.estado = imovel_info.get("estado")
-            imovel.cidade = imovel_info.get("cidade")
-            imovel.endereco = imovel_info.get("endereco")
-            imovel.complemento = imovel_info.get("complemento")
-            imovel.sobre_imovel = imovel_info.get("sobre_imovel")
-            imovel.area_total = imovel_info.get("area_total")
-            imovel.area_construida = imovel_info.get("area_construida")
-            imovel.dormitorios = imovel_info.get("dormitorios")
-            imovel.banheiros = imovel_info.get("banheiros")
-            imovel.suites = imovel_info.get("suites")
-            imovel.vagas_garagem = imovel_info.get("vagas_garagem")
-            imovel.vagas_garagem_cobertas = imovel_info.get("vagas_garagem_cobertas")
-            imovel.vagas_garagem_descobertas = imovel_info.get("vagas_garagem_descobertas")
-
+            imovel.descricao = imovel_info.get("descricao") if imovel_info.get("descricao") else imovel.descricao
+            imovel.ativo = imovel_info.get("ativo") if imovel_info.get("ativo") is not None else imovel.ativo
+            imovel.lancamento = imovel_info.get("lancamento") if imovel_info.get("lancamento") is not None else imovel.lancamento
+            imovel.destaque = imovel_info.get("destaque") if imovel_info.get("destaque") is not None else imovel.destaque
+            imovel.valor = imovel_info.get("valor") if imovel_info.get("valor") is not None else imovel.valor
+            imovel.finalidade = imovel_info.get("finalidade") if imovel_info.get("finalidade") is not None else imovel.finalidade
+            imovel.tipo_imovel = imovel_info.get("tipo_imovel") if imovel_info.get("tipo_imovel") is not None else imovel.tipo_imovel
+            imovel.pretensao = imovel_info.get("pretensao") if imovel_info.get("pretensao") is not None else imovel.pretensao
+            imovel.estado = imovel_info.get("estado") if imovel_info.get("estado") is not None else imovel.estado
+            imovel.cidade = imovel_info.get("cidade") if imovel_info.get("cidade") is not None else imovel.cidade
+            imovel.endereco = imovel_info.get("endereco") if imovel_info.get("endereco") is not None else imovel.endereco
+            imovel.complemento = imovel_info.get("complemento") if imovel_info.get("complemento") is not None else imovel.complemento
+            imovel.sobre_imovel = imovel_info.get("sobre_imovel") if imovel_info.get("sobre_imovel") is not None else imovel.sobre_imovel
+            imovel.area_total = imovel_info.get("area_total") if imovel_info.get("area_total") is not None else imovel.area_total
+            imovel.area_construida = imovel_info.get("area_construida") if imovel_info.get("area_construida") is not None else imovel.area_construida
+            imovel.dormitorios = imovel_info.get("dormitorios") if imovel_info.get("dormitorios") is not None else imovel.dormitorios
+            imovel.banheiros = imovel_info.get("banheiros") if imovel_info.get("banheiros") is not None else imovel.banheiros
+            imovel.suites = imovel_info.get("suites") if imovel_info.get("suites") is not None else imovel.suites
+            imovel.vagas_garagem = imovel_info.get("vagas_garagem") if imovel_info.get("vagas_garagem") is not None else imovel.vagas_garagem
+            imovel.vagas_garagem_cobertas = imovel_info.get("vagas_garagem_cobertas") if imovel_info.get("vagas_garagem_cobertas") is not None else imovel.vagas_garagem_cobertas
+            imovel.vagas_garagem_descobertas = imovel_info.get("vagas_garagem_descobertas") if imovel_info.get("vagas_garagem_descobertas") is not None else imovel.vagas_garagem_descobertas
+            
             self.__db_session.commit()
-            return await self.visualizar_imoveis(imovel.id)
+            return imovel
         except Exception as exception:
             self.__db_session.rollback()
             raise exception
