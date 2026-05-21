@@ -20,11 +20,12 @@ pip install pytest
 pip install pytest-asyncio
 pytest -s -v src\
 
-
 pip install alembic
 alembic init alembic
 alembic revision --autogenerate -m "Create table imoveis"
 alembic upgrade head
+
+pip install aiofiles
 
 --------------------------------------------------------
 git init

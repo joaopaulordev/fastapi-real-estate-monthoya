@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from src.main.routes.imoveis_routes import imoveis_routes
 from src.main.routes.fotos_routes import fotos_routes
 from src.main.routes.comentarios_routes import comentario_routes
@@ -8,6 +9,9 @@ from src.main.routes.tipo_imoveis_routes import tipo_imovel_routes
 from src.main.routes.pretensoes_routes import pretensao_routes
 
 app = FastAPI()
+
+# Mount the 'uploads' folder to the '/uploads' URL path
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.include_router(finalidade_routes)
 app.include_router(tipo_imovel_routes)
