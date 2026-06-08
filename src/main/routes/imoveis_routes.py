@@ -74,7 +74,7 @@ async def criar_imovel(body: ImovelSchema, db: Session = Depends(get_session_db)
 async def listar_imoveis(body: ListarImovelSchema, db: Session = Depends(get_session_db)):    
     http_request = HttpRequest(body=dict(body))
     view = imovel_listar_composer(db)
-
+    
     http_response = await view.handle_listar_imoveis(http_request)
 
     return JSONResponse(
