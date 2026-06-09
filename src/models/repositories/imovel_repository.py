@@ -67,8 +67,8 @@ class ImovelRepository(ImovelRepositoryInterface):
 
     async def listar_imoveis(self, imovel_info: dict) -> List[Imovel]:
         imoveis = None
-        if imovel_info.get("valor_final") < imovel_info.get("valor_inicial"):
-            raise HttpBadRequestError("Valor final deve ser maior que o valor inicial.")
+        # if imovel_info.get("valor_final") < imovel_info.get("valor_inicial"):
+        #     raise HttpBadRequestError("Valor final deve ser maior que o valor inicial.")
         
         if imovel_info.get("valor_inicial") < 0 or imovel_info.get("valor_final") < 0:
             raise HttpBadRequestError("Valores devem ser positivos.")
@@ -77,7 +77,9 @@ class ImovelRepository(ImovelRepositoryInterface):
              imoveis = self.__db_session.query(Imovel).all()             
         elif imovel_info.get("valor_inicial") == 0:
              imoveis = self.__db_session.query(Imovel).filter(Imovel.valor <= imovel_info.get("valor_final")).all()
-        else:
+        elif imovel_info.get("valor_final") == 0:
+            imoveis = self.__db_session.query(Imovel).filter(Imovel.valor >= imovel_info.get("valor_inicial")).all()
+        elif imovel_info.get("valor_inicial") > 0 and imovel_info.get("valor_final") > 0:
             imoveis = self.__db_session.query(Imovel).filter(Imovel.valor >= imovel_info.get("valor_inicial"), Imovel.valor <= imovel_info.get("valor_final")).all()
 
         if imovel_info.get("pretensao"):
