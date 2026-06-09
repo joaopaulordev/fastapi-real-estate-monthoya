@@ -4,6 +4,21 @@ from sqlalchemy.orm import declarative_base, relationship, mapped_column, Mapped
 
 Base = declarative_base()
 
+class Configuracao(Base):
+    __tablename__ = "configuracoes"
+
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    descricao = Column("descricao", String, nullable=True)
+    quantidade = Column("quantidade", Integer, nullable=True, default=0)
+
+    def __init__(self, descricao, quantidade):
+        self.descricao = descricao
+        self.quantidade = quantidade
+    
+    def __repr__(self):
+        return f"Configuracao [descricao={self.descricao}, quantidade={self.quantidade}]"
+
+
 class Finalidade(Base):
     __tablename__ = "finalidades"
 

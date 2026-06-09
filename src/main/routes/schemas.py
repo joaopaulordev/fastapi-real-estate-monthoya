@@ -22,6 +22,12 @@ class PretensaoSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class ConfiguracaoSchema(BaseModel):
+    quantidade: int
+    
+    class Config:
+        from_attributes = True
+
 
 class ImovelSchema(BaseModel):
     descricao: Optional[str] = None

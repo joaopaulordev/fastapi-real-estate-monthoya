@@ -26,5 +26,5 @@ class PretensaoAtualizarController(PretensaoAtualizarControllerInterface):
         return {
             "type": "Pretensao",
             "count": 1,
-            "attributes": formatted_pretensao
+            "pretensao": formatted_pretensao
         }
