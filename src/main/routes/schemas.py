@@ -69,7 +69,11 @@ class ListarImovelSchema(BaseModel):
     dormitorios: Optional[int] = 0
     banheiros: Optional[int] = 0    
     suites: Optional[int] = 0
-    vagas_garagem: Optional[int] = 0
+    vagas: Optional[int] = 0
+    area_total_min: Optional[int] = 0
+    area_total_max: Optional[int] = 0
+    area_construida_min: Optional[int] = 0
+    area_construida_max: Optional[int] = 0
 
     class Config:
         from_attributes = True

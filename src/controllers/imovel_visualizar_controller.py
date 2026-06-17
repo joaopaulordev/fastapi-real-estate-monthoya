@@ -23,11 +23,9 @@ class ImovelVisualizarController(ImovelVisualizarControllerInterface):
                             "comentarios": [{"id": comentario.id, "texto": comentario.texto, "aprovado": comentario.aprovado, "imovel_id": comentario.imovel_id} for comentario in imovel.comentarios],
                             "interessados": [{"id": interessado.id, "nome": interessado.nome, "email": interessado.email, "telefone": interessado.telefone, "estado": interessado.estado, "cidade": interessado.cidade, "imovel_id": interessado.imovel_id} for interessado in imovel.interessados]
                     }
-        return {
-            "data": {
-                "type": "Imóvel",
-                "count": 1,
-                "attributes": formatted_imovel
-            }
+        return {        
+            "type": "Imóvel",
+            "count": 1,
+            "imovel": formatted_imovel        
         }
         

@@ -67,8 +67,6 @@ class ImovelRepository(ImovelRepositoryInterface):
 
     async def listar_imoveis(self, imovel_info: dict) -> List[Imovel]:
         imoveis = None
-        # if imovel_info.get("valor_final") < imovel_info.get("valor_inicial"):
-        #     raise HttpBadRequestError("Valor final deve ser maior que o valor inicial.")
         
         if imovel_info.get("valor_inicial") < 0 or imovel_info.get("valor_final") < 0:
             raise HttpBadRequestError("Valores devem ser positivos.")
@@ -100,25 +98,27 @@ class ImovelRepository(ImovelRepositoryInterface):
         if imovel_info.get("ativo"):
             imoveis = [imovel for imovel in imoveis if imovel.ativo == imovel_info.get("ativo")]
 
-        if imovel_info.get("dormitorios") and imovel_info.get("dormitorios") >= 5:
+        if imovel_info.get("dormitorios"):
             imoveis = [imovel for imovel in imoveis if imovel.dormitorios >= imovel_info.get("dormitorios")]
-        elif imovel_info.get("dormitorios") and imovel_info.get("dormitorios") < 5:
-            imoveis = [imovel for imovel in imoveis if imovel.dormitorios == imovel_info.get("dormitorios")]
-        
-        if imovel_info.get("banheiros") and imovel_info.get("banheiros") >= 5:
+
+        if imovel_info.get("banheiros"):
             imoveis = [imovel for imovel in imoveis if imovel.banheiros >= imovel_info.get("banheiros")]
-        elif imovel_info.get("banheiros") and imovel_info.get("banheiros") < 5:
-            imoveis = [imovel for imovel in imoveis if imovel.banheiros == imovel_info.get("banheiros")]
 
-        if imovel_info.get("suites") and imovel_info.get("suites") >= 5:
-            imoveis = [imovel for imovel in imoveis if imovel.suites == imovel_info.get("suites")]
-        elif imovel_info.get("suites") and imovel_info.get("suites") < 5:
-            imoveis = [imovel for imovel in imoveis if imovel.suites == imovel_info.get("suites")]
+        if imovel_info.get("suites"):
+            imoveis = [imovel for imovel in imoveis if imovel.suites >= imovel_info.get("suites")]
+        
+        if imovel_info.get("vagas"):           
+            imoveis = [imovel for imovel in imoveis if imovel.vagas_garagem >= imovel_info.get("vagas")]
+        
+        if imovel_info.get("area_total_min"):             
+             imoveis = [imovel for imovel in imoveis if imovel.area_total >= imovel_info.get("area_total_min")]
+        if imovel_info.get("area_total_max"):            
+            imoveis = [imovel for imovel in imoveis if imovel.area_total <= imovel_info.get("area_total_max")]
 
-        if imovel_info.get("vagas_garagem") and imovel_info.get("vagas_garagem") >= 5:
-            imoveis = [imovel for imovel in imoveis if imovel.vagas_garagem >= imovel_info.get("vagas_garagem")]
-        elif imovel_info.get("vagas_garagem") and imovel_info.get("vagas_garagem") < 5:
-            imoveis = [imovel for imovel in imoveis if imovel.vagas_garagem == imovel_info.get("vagas_garagem")]
+        if imovel_info.get("area_construida_min"):             
+             imoveis = [imovel for imovel in imoveis if imovel.area_construida >= imovel_info.get("area_construida_min")]
+        if imovel_info.get("area_construida_max"):            
+            imoveis = [imovel for imovel in imoveis if imovel.area_construida <= imovel_info.get("area_construida_max")]
 
         return imoveis
 
