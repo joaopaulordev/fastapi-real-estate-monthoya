@@ -15,7 +15,7 @@ class InteressadoRepository(InteressadoRepositoryInterface):
             if not imovel:
                 raise HttpNotFoundError("Imóvel não encontrado.")
             
-            interessado = Interessado(imovel=imovel, nome=interessado_info["nome"], email=interessado_info["email"], telefone=interessado_info["telefone"], estado=interessado_info["estado"], cidade=interessado_info["cidade"])
+            interessado = Interessado(imovel=imovel, nome=interessado_info["nome"], email=interessado_info["email"], telefone=interessado_info["telefone"], mensagem=interessado_info["mensagem"], estado=interessado_info["estado"], cidade=interessado_info["cidade"])
             self.__db_session.add(interessado)
             self.__db_session.commit()  
             return interessado                      

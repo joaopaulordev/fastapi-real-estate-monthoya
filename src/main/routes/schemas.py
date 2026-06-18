@@ -93,6 +93,7 @@ class InteressadoSchema(BaseModel):
     telefone: str
     estado: int
     cidade: str
+    mensagem: str
 
     class Config:
         from_attributes = True

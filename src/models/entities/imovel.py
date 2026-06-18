@@ -197,14 +197,16 @@ class Interessado(Base):
     telefone = Column("telefone", String, nullable=False)
     estado = Column("estado", Integer, ForeignKey("estados.id"))    
     cidade = Column("cidade", String, nullable=False)
+    mensagem = Column("mensagem", String, nullable=True)
     imovel_id: Mapped[int] = mapped_column(ForeignKey("imoveis.id"))
     imovel: Mapped["Imovel"] = relationship(back_populates="interessados")
     
-    def __init__(self, nome, email, telefone, estado, cidade, imovel):
+    def __init__(self, nome, email, telefone, estado, mensagem, cidade, imovel):
         self.nome = nome
         self.email = email
         self.telefone = telefone
         self.estado = estado
+        self.mensagem = mensagem
         self.cidade = cidade
         self.imovel = imovel
 

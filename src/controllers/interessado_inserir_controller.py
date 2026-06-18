@@ -41,9 +41,9 @@ class InteressadoInserirController(InteressadoInserirControllerInterface):
 
 
     def __format__response(self, interessado: Interessado) -> dict:
-        formatted_interessado = { "id": interessado.id, "nome": interessado.nome, "email": interessado.email, "telefone": interessado.telefone, "estado": interessado.estado, "cidade": interessado.cidade, "imovel_id": interessado.imovel_id }
+        formatted_interessado = { "id": interessado.id, "nome": interessado.nome, "email": interessado.email, "telefone": interessado.telefone, "estado": interessado.estado, "cidade": interessado.cidade, "mensagem": interessado.mensagem, "imovel_id": interessado.imovel_id }
         return {
             "type": "Interessado",
             "count": 1,
-            "attributes": formatted_interessado
+            "interessado": formatted_interessado
         }
