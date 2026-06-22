@@ -4,4 +4,5 @@ from abc import ABC, abstractmethod
 class ImovelVisualizarControllerInterface(ABC):
 
     @abstractmethod
-    async def visualizar(self, imovel_id: int) -> Dict: pass
+    async def visualizar(self, imovel_id: int, count_view: bool) -> Dict: pass
+   

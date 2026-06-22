@@ -12,11 +12,12 @@ from src.main.composer.imovel_caracteristica_inserir_composer import imovel_cara
 from src.main.composer.imovel_caracteristica_deletar_composer import imovel_caracteristica_deletar_composer
 from src.main.composer.imovel_caracteristica_atualizar_composer import imovel_caracteristica_atualizar_composer
 from src.views.http_types.http_request import HttpRequest
-
-from src.models.entities.imovel import Imovel
-
+import os
 
 imoveis_routes = APIRouter(tags=["Imóveis"])
+
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @imoveis_routes.post("/imoveis/caracteristicas/adicionar/{imovel_id}")
 async def inserir_caracteristicas_imovel(imovel_id: int, body: CaracteristicasSchema, db: Session = Depends(get_session_db)):
@@ -60,10 +61,9 @@ async def deletar_caracteristicas_imovel(imovel_id: int, body: CaracteristicasSc
 @imoveis_routes.post("/imoveis")
 async def criar_imovel(body: ImovelSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body))
-    imovel_inserir = imovel_inserir_composer(db)
-
+    imovel_inserir = imovel_inserir_composer(db)    
     http_response = await imovel_inserir.handle_inserir_imovel(http_request)
-    
+
     return JSONResponse(
         content=http_response.body,
         status_code=http_response.status_code
@@ -89,7 +89,7 @@ async def visualizar_imovel(imovel_id: int, db: Session = Depends(get_session_db
     view = imovel_visualizar_composer(db)
 
     http_response = await view.handle_visualizar_imovel(http_request)
-
+    
     return JSONResponse(
         content=http_response.body, 
         status_code=http_response.status_code

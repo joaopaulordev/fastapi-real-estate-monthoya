@@ -4,6 +4,23 @@ from sqlalchemy.orm import declarative_base, relationship, mapped_column, Mapped
 
 Base = declarative_base()
 
+class ConfigWhatsapp(Base):
+    __tablename__ = "configs_whatsapp"
+
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    ativo = Column("ativo", Boolean, nullable=True, default=False)
+    mensagem = Column("mensagem", String, nullable=True)
+    telefone = Column("telefone", String, nullable=True)
+
+    def __init__(self, ativo, mensagem, telefone):
+        self.ativo = ativo
+        self.mensagem = mensagem
+        self.telefone = telefone
+    
+    def __repr__(self):
+        return f"Configuracao Whatsapp [ativo={self.ativo}, mensagem={self.mensagem}, telefone={self.telefone}]"
+
+
 class Configuracao(Base):
     __tablename__ = "configuracoes"
 
@@ -112,21 +129,23 @@ class Imovel(Base):
     endereco = Column("endereco", String, nullable=True)
     complemento = Column("complemento", String, nullable=True)
     sobre_imovel = Column("sobre_imovel", String, nullable=True)
+    localizacao_desc = Column("localizacao_desc", String, nullable=True)
+    localizacao_img = Column("localizacao_img", String, nullable=True) 
     caracteristicas = relationship("Caracteristica", secondary=caracteristica_imovel_association, back_populates="imoveis")
-    area_total = Column("area_total", Float, nullable=True)
-    area_construida = Column("area_construida", Float, nullable=True)
-    dormitorios = Column("dormitorios", Integer, nullable=True)
-    banheiros = Column("banheiros", Integer, nullable=True)
-    suites = Column("suites", Integer, nullable=True)
-    vagas_garagem = Column("vagas_garagem", Integer, nullable=True)
-    vagas_garagem_cobertas = Column("vagas_garagem_cobertas", Integer, nullable=True)
-    vagas_garagem_descobertas = Column("vagas_garagem_descobertas", Integer, nullable=True)
+    area_total = Column("area_total", Float, nullable=True, default=0)
+    area_construida = Column("area_construida", Float, nullable=True, default=0)
+    dormitorios = Column("dormitorios", Integer, nullable=True, default=0)
+    banheiros = Column("banheiros", Integer, nullable=True, default=0)
+    suites = Column("suites", Integer, nullable=True, default=0)
+    vagas_garagem = Column("vagas_garagem", Integer, nullable=True, default=0)
+    vagas_garagem_cobertas = Column("vagas_garagem_cobertas", Integer, nullable=True, default=0)
+    vagas_garagem_descobertas = Column("vagas_garagem_descobertas", Integer, nullable=True, default=0)
     fotos: Mapped[List["Foto"]] = relationship(back_populates="imovel")
     comentarios: Mapped[List["Comentario"]] = relationship(back_populates="imovel")
     interessados: Mapped[List["Interessado"]] = relationship(back_populates="imovel")
 
     
-    def __init__(self, descricao, ativo, lancamento, destaque, valor, visualizacoes, finalidade, tipo_imovel, pretensao, estado, cidade, endereco, complemento, sobre_imovel, area_total, area_construida, dormitorios, banheiros, suites, vagas_garagem, vagas_garagem_cobertas, vagas_garagem_descobertas):
+    def __init__(self, descricao, ativo, lancamento, destaque, valor, visualizacoes, finalidade, tipo_imovel, pretensao, estado, cidade, endereco, complemento, sobre_imovel, localizacao_desc, localizacao_img, area_total, area_construida, dormitorios, banheiros, suites, vagas_garagem, vagas_garagem_cobertas, vagas_garagem_descobertas):
         self.descricao = descricao
         self.ativo = ativo
         self.lancamento = lancamento
@@ -141,6 +160,8 @@ class Imovel(Base):
         self.endereco = endereco
         self.complemento = complemento
         self.sobre_imovel = sobre_imovel
+        self.localizacao_desc = localizacao_desc
+        self.localizacao_img = localizacao_img
         self.area_total = area_total
         self.area_construida = area_construida
         self.dormitorios = dormitorios

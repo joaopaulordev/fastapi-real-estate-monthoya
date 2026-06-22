@@ -8,10 +8,10 @@ class ImovelAtualizarView:
     def __init__(self, controller: ImovelAtualizarControllerInterface) -> None:
         self.__controller = controller
 
-    async def handle_atualizar_imovel(self, http_request: HttpRequest) -> HttpResponse:
-        try:
+    async def handle_atualizar_imovel(self, http_request: HttpRequest, clean_loc: bool = False) -> HttpResponse:
+        try:            
             imovel_data = {"id": http_request.param.get("imovel_id"), **http_request.body}
-            response = await self.__controller.atualizar(imovel_data)
+            response = await self.__controller.atualizar(imovel_data, clean_loc)
             return HttpResponse(body=response, status_code=200)            
         except Exception as exception:
             error_handler(exception)

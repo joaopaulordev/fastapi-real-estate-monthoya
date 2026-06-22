@@ -1,6 +1,14 @@
 from pydantic import BaseModel
 from typing import Optional, List
 
+class ConfigWhatsappSchema(BaseModel):
+    ativo: bool
+    mensagem: str
+    telefone: str
+    
+    class Config:
+        from_attributes = True
+        
 
 class FinalidadeSchema(BaseModel):
     descricao: str
@@ -43,7 +51,7 @@ class ImovelSchema(BaseModel):
     cidade: Optional[str] = None
     endereco: Optional[str] = None
     complemento: Optional[str] = None
-    sobre_imovel: Optional[str] = None
+    sobre_imovel: Optional[str] = None    
     area_total: Optional[float] = 0
     area_construida: Optional[float] = 0 
     dormitorios: Optional[int] = 0
@@ -103,3 +111,5 @@ class CaracteristicasSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+

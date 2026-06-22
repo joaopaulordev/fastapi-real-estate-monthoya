@@ -56,5 +56,5 @@ class ImovelInserirController(ImovelInserirControllerInterface):
         return {
             "type": "Imóvel",
             "count": 1,
-            "attributes": formatted_imovel
+            "imovel": formatted_imovel
         }
