@@ -200,3 +200,18 @@ class ImovelRepository(ImovelRepositoryInterface):
             self.__db_session.rollback()
             raise exception
         
+        
+    async def buscar_imoveis_similares(self, imovel_id: int) -> List[Imovel]:
+        imovel = self.__db_session.query(Imovel).filter(Imovel.id == imovel_id).first()
+        if not imovel:
+            raise HttpNotFoundError("Imóvel não encontrado.")        
+        
+        imoveis_similares = self.__db_session.query(Imovel).filter(
+            Imovel.id != imovel.id, # Exclui o próprio imóvel        
+            Imovel.dormitorios >= imovel.dormitorios - 1,        
+            Imovel.dormitorios <= imovel.dormitorios + 1,
+            Imovel.banheiros >= imovel.banheiros - 1,
+            Imovel.banheiros <= imovel.banheiros + 1,           
+        ).limit(6).all()
+
+        return imoveis_similares

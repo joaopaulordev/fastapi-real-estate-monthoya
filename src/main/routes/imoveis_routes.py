@@ -6,6 +6,7 @@ from src.models.settings.dependencies import get_session_db
 from src.main.composer.imovel_listar_composer import imovel_listar_composer
 from src.main.composer.imovel_inserir_composer import imovel_inserir_composer
 from src.main.composer.imovel_visualizar_composer import imovel_visualizar_composer
+from src.main.composer.imovel_buscar_similares_composer import imovel_buscarsimilares_composer
 from src.main.composer.imovel_atualizar_composer import imovel_atualizar_composer
 from src.main.composer.imovel_deletar_composer import imovel_deletar_composer
 from src.main.composer.imovel_caracteristica_inserir_composer import imovel_caracteristica_inserir_composer
@@ -13,6 +14,7 @@ from src.main.composer.imovel_caracteristica_deletar_composer import imovel_cara
 from src.main.composer.imovel_caracteristica_atualizar_composer import imovel_caracteristica_atualizar_composer
 from src.views.http_types.http_request import HttpRequest
 import os
+from src.models.entities.imovel import Imovel
 
 imoveis_routes = APIRouter(tags=["Imóveis"])
 
@@ -120,3 +122,16 @@ async def deletar_imovel(imovel_id: int, db: Session = Depends(get_session_db)):
         content=http_response.body, 
         status_code=http_response.status_code
     )        
+
+
+@imoveis_routes.get("/imoveis/{imovel_id}/similares")
+async def buscar_imoveis_similares(imovel_id: int, db: Session = Depends(get_session_db)): 
+    http_request = HttpRequest(param={"imovel_id": imovel_id})
+    view = imovel_buscarsimilares_composer(db)
+
+    http_response = await view.handle_buscar_similares_imovel(http_request)
+    
+    return JSONResponse(
+        content=http_response.body, 
+        status_code=http_response.status_code
+    )      

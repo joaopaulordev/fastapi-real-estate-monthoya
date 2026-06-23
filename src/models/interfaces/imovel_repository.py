@@ -27,3 +27,6 @@ class ImovelRepositoryInterface(ABC):
 
     @abstractmethod    
     async def deletar_imovel(self, imovel_id: int) -> None: pass 
+
+    @abstractmethod
+    async def buscar_imoveis_similares(self, imovel_id: int) -> List[Imovel]: pass
