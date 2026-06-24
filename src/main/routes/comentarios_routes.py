@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from src.main.routes.schemas import ComentarioSchema
-from src.models.settings.dependencies import get_session_db
+from src.models.settings.dependencies import get_session_db, check_token
 from src.views.http_types.http_request import HttpRequest
 from src.main.composer.comentario_inserir_composer import comentario_inserir_composer
 from src.main.composer.comentario_listar_composer import comentario_listar_composer
@@ -10,7 +10,7 @@ from src.main.composer.comentario_visualizar_composer import comentario_visualiz
 from src.main.composer.comentario_atualizar_composer import comentario_atualizar_composer
 from src.main.composer.comentario_deletar_composer import comentario_deletar_composer
 
-comentario_routes = APIRouter(tags=["Comentários"])
+comentario_routes = APIRouter(tags=["Comentários"], dependencies=[Depends(check_token)])
 
 @comentario_routes.post("/comentarios/adicionar/{imovel_id}")
 async def adicionar_comentario(imovel_id: int, body: ComentarioSchema, db: Session = Depends(get_session_db)):

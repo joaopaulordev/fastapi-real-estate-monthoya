@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from src.main.routes.schemas import FinalidadeSchema
-from src.models.settings.dependencies import get_session_db
+from src.models.settings.dependencies import get_session_db, check_token
 from src.views.http_types.http_request import HttpRequest
 from src.main.composer.finalidade_atualizar_composer import finalidade_atualizar_composer
 from src.main.composer.finalidade_deletar_composer import finalidade_deletar_composer
@@ -13,7 +13,7 @@ from src.main.composer.finalidade_visualizar_composer import finalidade_visualiz
 
 finalidade_routes = APIRouter(tags=["Finalidades"])
 
-@finalidade_routes.post("/finalidades/adicionar")
+@finalidade_routes.post("/finalidades/adicionar", dependencies=[Depends(check_token)])
 async def adicionar_finalidade(body: FinalidadeSchema, db: Session = Depends(get_session_db)):
     finalidade_inserir = finalidade_inserir_composer(db)
 
@@ -52,7 +52,7 @@ async def visualizar_finalidade(finalidade_id: int, db: Session = Depends(get_se
     )        
 
 
-@finalidade_routes.put("/finalidades/atualizar/{finalidade_id}")
+@finalidade_routes.put("/finalidades/atualizar/{finalidade_id}", dependencies=[Depends(check_token)])
 async def atualizar_finalidade(finalidade_id: int, body: FinalidadeSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"finalidade_id": finalidade_id})
     finalidade_atualizar = finalidade_atualizar_composer(db)
@@ -65,7 +65,7 @@ async def atualizar_finalidade(finalidade_id: int, body: FinalidadeSchema, db: S
     )
 
 
-@finalidade_routes.delete("/finalidades/deletar/{finalidade_id}")
+@finalidade_routes.delete("/finalidades/deletar/{finalidade_id}", dependencies=[Depends(check_token)])
 async def deletar_finalidade(finalidade_id: int, db: Session = Depends(get_session_db)):    
     view = finalidade_deletar_composer(db)
 

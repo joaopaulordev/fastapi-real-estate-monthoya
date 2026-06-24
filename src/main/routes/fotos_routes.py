@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from src.models.settings.dependencies import get_session_db
+from src.models.settings.dependencies import get_session_db, check_token
 from src.views.http_types.http_request import HttpRequest
-from src.errors.types.http_not_found_error import HttpNotFoundError
 import os
 from typing import List
 from src.main.composer.foto_inserir_composer import foto_inserir_composer
@@ -11,7 +10,7 @@ from src.main.composer.foto_listar_composer import foto_listar_composer
 from src.main.composer.foto_deletar_composer import foto_deletar_composer
 
 
-fotos_routes = APIRouter(tags=["Fotos"])
+fotos_routes = APIRouter(tags=["Fotos"], dependencies=[Depends(check_token)])
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)

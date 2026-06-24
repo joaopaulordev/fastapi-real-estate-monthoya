@@ -27,6 +27,11 @@ alembic upgrade head
 
 pip install aiofiles
 
+pip install python-jose[cryptography] 
+pip install python-dotenv
+pip install passlib[bcrypt]==1.7.4
+pip install bcrypt==4.3.0
+
 --------------------------------------------------------
 git init
 git log

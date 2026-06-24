@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from src.main.routes.schemas import ConfiguracaoSchema
-from src.models.settings.dependencies import get_session_db
+from src.models.settings.dependencies import get_session_db, check_token
 from src.views.http_types.http_request import HttpRequest
 from src.main.composer.configuracao_atualizar_composer import configuracao_atualizar_composer
 from src.main.composer.configuracao_listar_composer import configuracao_listar_composer
@@ -24,7 +24,7 @@ async def listar_configuracoes(db: Session = Depends(get_session_db)):
     )        
 
 
-@configuracao_routes.put("/configuracoes/atualizar/{configuracao_id}")
+@configuracao_routes.put("/configuracoes/atualizar/{configuracao_id}", dependencies=[Depends(check_token)])
 async def atualizar_configuracao(configuracao_id: int, body: ConfiguracaoSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"configuracao_id": configuracao_id})
     configuracao_atualizar = configuracao_atualizar_composer(db)

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from src.main.routes.schemas import PretensaoSchema
-from src.models.settings.dependencies import get_session_db
+from src.models.settings.dependencies import get_session_db, check_token
 from src.views.http_types.http_request import HttpRequest
 from src.main.composer.pretensao_atualizar_composer import pretensao_atualizar_composer
 from src.main.composer.pretensao_deletar_composer import pretensao_deletar_composer
@@ -13,7 +13,7 @@ from src.main.composer.pretensao_visualizar_composer import pretensao_visualizar
 
 pretensao_routes = APIRouter(tags=["Pretensões"])
 
-@pretensao_routes.post("/pretensoes/adicionar")
+@pretensao_routes.post("/pretensoes/adicionar", dependencies=[Depends(check_token)])
 async def adicionar_pretensao(body: PretensaoSchema, db: Session = Depends(get_session_db)):
     pretensao_inserir = pretensao_inserir_composer(db)
 
@@ -52,7 +52,7 @@ async def visualizar_pretensao(pretensao_id: int, db: Session = Depends(get_sess
     )        
 
 
-@pretensao_routes.put("/pretensoes/atualizar/{pretensao_id}")
+@pretensao_routes.put("/pretensoes/atualizar/{pretensao_id}", dependencies=[Depends(check_token)])
 async def atualizar_pretensao(pretensao_id: int, body: PretensaoSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"pretensao_id": pretensao_id})
     pretensao_atualizar = pretensao_atualizar_composer(db)
@@ -65,7 +65,7 @@ async def atualizar_pretensao(pretensao_id: int, body: PretensaoSchema, db: Sess
     )
 
 
-@pretensao_routes.delete("/pretensoes/deletar/{pretensao_id}")
+@pretensao_routes.delete("/pretensoes/deletar/{pretensao_id}", dependencies=[Depends(check_token)])
 async def deletar_pretensao(pretensao_id: int, db: Session = Depends(get_session_db)):    
     view = pretensao_deletar_composer(db)
 

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from src.main.routes.schemas import CaracteristicasSchema, ImovelSchema, ListarImovelSchema
-from src.models.settings.dependencies import get_session_db
+from src.models.settings.dependencies import get_session_db, check_token
 from src.main.composer.imovel_listar_composer import imovel_listar_composer
 from src.main.composer.imovel_inserir_composer import imovel_inserir_composer
 from src.main.composer.imovel_visualizar_composer import imovel_visualizar_composer
@@ -14,14 +14,13 @@ from src.main.composer.imovel_caracteristica_deletar_composer import imovel_cara
 from src.main.composer.imovel_caracteristica_atualizar_composer import imovel_caracteristica_atualizar_composer
 from src.views.http_types.http_request import HttpRequest
 import os
-from src.models.entities.imovel import Imovel
 
 imoveis_routes = APIRouter(tags=["Imóveis"])
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@imoveis_routes.post("/imoveis/caracteristicas/adicionar/{imovel_id}")
+@imoveis_routes.post("/imoveis/caracteristicas/adicionar/{imovel_id}", dependencies=[Depends(check_token)])
 async def inserir_caracteristicas_imovel(imovel_id: int, body: CaracteristicasSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"imovel_id": imovel_id})
     imovel_caracteristica_inserir = imovel_caracteristica_inserir_composer(db)
@@ -34,7 +33,7 @@ async def inserir_caracteristicas_imovel(imovel_id: int, body: CaracteristicasSc
     )
 
 
-@imoveis_routes.post("/imoveis/caracteristicas/atualizar/{imovel_id}")
+@imoveis_routes.post("/imoveis/caracteristicas/atualizar/{imovel_id}", dependencies=[Depends(check_token)])
 async def atualizar_caracteristicas_imovel(imovel_id: int, body: CaracteristicasSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"imovel_id": imovel_id})
     imovel_caracteristica_atualizar = imovel_caracteristica_atualizar_composer(db)
@@ -47,7 +46,7 @@ async def atualizar_caracteristicas_imovel(imovel_id: int, body: Caracteristicas
     )
 
 
-@imoveis_routes.post("/imoveis/caracteristicas/deletar/{imovel_id}")
+@imoveis_routes.post("/imoveis/caracteristicas/deletar/{imovel_id}", dependencies=[Depends(check_token)])
 async def deletar_caracteristicas_imovel(imovel_id: int, body: CaracteristicasSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"imovel_id": imovel_id})
     imovel_caracteristica_deletar = imovel_caracteristica_deletar_composer(db)
@@ -60,7 +59,7 @@ async def deletar_caracteristicas_imovel(imovel_id: int, body: CaracteristicasSc
     )
 
 
-@imoveis_routes.post("/imoveis")
+@imoveis_routes.post("/imoveis", dependencies=[Depends(check_token)])
 async def criar_imovel(body: ImovelSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body))
     imovel_inserir = imovel_inserir_composer(db)    
@@ -98,7 +97,7 @@ async def visualizar_imovel(imovel_id: int, db: Session = Depends(get_session_db
     )        
 
 
-@imoveis_routes.put("/imoveis/atualizar/{imovel_id}")
+@imoveis_routes.put("/imoveis/atualizar/{imovel_id}", dependencies=[Depends(check_token)])
 async def atualizar_imovel(imovel_id: int, body: ImovelSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"imovel_id": imovel_id})
     imovel_atualizar = imovel_atualizar_composer(db)
@@ -111,7 +110,7 @@ async def atualizar_imovel(imovel_id: int, body: ImovelSchema, db: Session = Dep
     )
 
 
-@imoveis_routes.delete("/imoveis/deletar/{imovel_id}")
+@imoveis_routes.delete("/imoveis/deletar/{imovel_id}", dependencies=[Depends(check_token)])
 async def deletar_imovel(imovel_id: int, db: Session = Depends(get_session_db)):    
     http_request = HttpRequest(param={"imovel_id": imovel_id})
     view = imovel_deletar_composer(db)

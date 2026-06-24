@@ -17,7 +17,7 @@ class InteressadoListarController(InteressadoListarControllerInterface):
         return interessados
 
     def __format_response(self, interessados: List[Interessado]) -> dict:
-        formatted_interessados = [{ "id": interessado.id, "nome": interessado.nome, "email": interessado.email, "telefone": interessado.telefone, "estado": interessado.estado, "cidade": interessado.cidade, "imovel_id": interessado.imovel_id } for interessado in interessados]
+        formatted_interessados = [{ "id": interessado.id, "nome": interessado.nome, "email": interessado.email, "telefone": interessado.telefone, "estado": interessado.estado, "cidade": interessado.cidade, "mensagem": interessado.mensagem, "imovel_id": interessado.imovel_id } for interessado in interessados]
         return {
             "data": {
                 "type": "Interessados",

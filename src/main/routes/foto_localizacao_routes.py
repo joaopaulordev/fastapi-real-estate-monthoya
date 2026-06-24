@@ -1,15 +1,14 @@
 from fastapi import APIRouter, Depends, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from src.models.settings.dependencies import get_session_db
+from src.models.settings.dependencies import get_session_db, check_token
 from src.views.http_types.http_request import HttpRequest
-from src.errors.types.http_not_found_error import HttpNotFoundError
 import os
 from src.main.composer.imovel_atualizar_composer import imovel_atualizar_composer
 from src.main.composer.imovel_visualizar_composer import imovel_visualizar_composer
 
 
-foto_localizacao_routes = APIRouter(tags=["Foto Localização"])
+foto_localizacao_routes = APIRouter(tags=["Foto Localização"], dependencies=[Depends(check_token)])
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)

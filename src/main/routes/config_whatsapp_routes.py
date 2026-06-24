@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from src.main.routes.schemas import ConfigWhatsappSchema
-from src.models.settings.dependencies import get_session_db
+from src.models.entities.imovel import Usuario
+from src.models.settings.dependencies import get_session_db, check_token
 from src.views.http_types.http_request import HttpRequest
 from src.main.composer.config_whatsapp_atualizar_composer import configwhatsapp_atualizar_composer
 from src.main.composer.config_whatsapp_deletar_composer import configwhatsapp_deletar_composer
@@ -13,7 +14,7 @@ from src.main.composer.config_whatsapp_visualizar_composer import configwhatsapp
 
 configwhatsapp_routes = APIRouter(tags=["Configuração Whatsapps"])
 
-@configwhatsapp_routes.post("/config-whatsapp/adicionar")
+@configwhatsapp_routes.post("/config-whatsapp/adicionar", dependencies=[Depends(check_token)])
 async def adicionar_configwhatsapp(body: ConfigWhatsappSchema, db: Session = Depends(get_session_db)):
     configwhatsapp_inserir = configwhatsapp_inserir_composer(db)
 
@@ -39,7 +40,7 @@ async def listar_configwhatsapps(db: Session = Depends(get_session_db)):
     )        
 
 
-@configwhatsapp_routes.get("/config-whatsapp/visualizar/{configwhatsapp_id}")
+@configwhatsapp_routes.get("/config-whatsapp/visualizar/{configwhatsapp_id}", dependencies=[Depends(check_token)])
 async def visualizar_configwhatsapp(configwhatsapp_id: int, db: Session = Depends(get_session_db)):    
     http_request = HttpRequest(param={"config_whatsapp_id": configwhatsapp_id})
     view = configwhatsapp_visualizar_composer(db)
@@ -52,7 +53,7 @@ async def visualizar_configwhatsapp(configwhatsapp_id: int, db: Session = Depend
     )        
 
 
-@configwhatsapp_routes.put("/config-whatsapp/atualizar/{configwhatsapp_id}")
+@configwhatsapp_routes.put("/config-whatsapp/atualizar/{configwhatsapp_id}", dependencies=[Depends(check_token)])
 async def atualizar_configwhatsapp(configwhatsapp_id: int, body: ConfigWhatsappSchema, db: Session = Depends(get_session_db)):
     http_request = HttpRequest(body=dict(body), param={"config_whatsapp_id": configwhatsapp_id})
     configwhatsapp_atualizar = configwhatsapp_atualizar_composer(db)
@@ -65,7 +66,7 @@ async def atualizar_configwhatsapp(configwhatsapp_id: int, body: ConfigWhatsappS
     )
 
 
-@configwhatsapp_routes.delete("/config-whatsapp/deletar/{configwhatsapp_id}")
+@configwhatsapp_routes.delete("/config-whatsapp/deletar/{configwhatsapp_id}", dependencies=[Depends(check_token)])
 async def deletar_configwhatsapp(configwhatsapp_id: int, db: Session = Depends(get_session_db)):    
     view = configwhatsapp_deletar_composer(db)
 
