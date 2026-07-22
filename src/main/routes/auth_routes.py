@@ -50,13 +50,25 @@ async def login(login_schema: LoginSchema, session: Session = Depends(get_sessio
     if not usuario:
         raise HTTPException(status_code=400, detail="Usuário não encontrado ou credenciais inválidas")
     else:
-        access_token = criar_token(usuario.id)
+        access_token = criar_token(usuario.id, duracao_token=timedelta(days=5))
         refresh_token = criar_token(usuario.id, duracao_token=timedelta(days=7))
         return {
             "access_token": access_token,
             "refresh_token": refresh_token,
             "token_type": "Bearer"
             }
+
+
+@auth_router.get("/get-profile")
+async def get_profile(usuario: Usuario = Depends(check_token)):
+    return {
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "ativo": usuario.ativo,
+        "admin": usuario.admin
+    }
+
 
 
 @auth_router.post("/login-form")

@@ -28,5 +28,5 @@ class FinalidadeInserirController(FinalidadeInserirControllerInterface):
         return {
             "type": "Finalidade",
             "count": 1,
-            "attributes": formatted_finalidade
+            "finalidade": formatted_finalidade
         }

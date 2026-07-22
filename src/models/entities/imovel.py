@@ -139,7 +139,7 @@ class Imovel(Base):
     destaque = Column("destaque", Boolean, nullable=True, default=False)
     valor = Column("valor", Float, nullable=False)
     visualizacoes = Column("visualizacoes", Integer, nullable=True, default=0)
-    finalidade = Column("finalidade", Integer, ForeignKey("finalidades.id"))
+    finalidade = Column("finalidade", Integer, ForeignKey("finalidades.id", ondelete="RESTRICT"), nullable=False)
     tipo_imovel = Column("tipo_imovel", Integer, ForeignKey("tipos_imovel.id"))
     pretensao = Column("pretensao", Integer, ForeignKey("pretensoes.id"))
     estado = Column("estado", Integer, ForeignKey("estados.id"))
